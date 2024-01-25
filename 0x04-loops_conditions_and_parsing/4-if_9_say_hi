@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# prints "Best School" ten times but for the ninth iteration follows up with "Hi"
+i=0
+while (("$i" < 10))
+do
+echo "Best School"
+if (("$i" == 8))
+then
+    echo "Hi"
+fi
+i=("$i"+1)
+done
