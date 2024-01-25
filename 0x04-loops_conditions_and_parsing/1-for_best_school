@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# prints "Best School" ten times
+i=1
+for i in {1..10}; do
+    echo "Best School"
+    i+=1;
+done
