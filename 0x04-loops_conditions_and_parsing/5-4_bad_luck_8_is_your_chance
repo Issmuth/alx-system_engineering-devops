@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#prints in loop "Bad Luck" for 4th iteration, "Good Luck" for 8th, "Best School" for the rest
+i=0
+while (("$i" < 10))
+do
+if (("$i" == 3))
+then
+    echo "Bad Luck"
+elif (("$i" == 7))
+then
+    echo "Good Luck"
+else
+    echo "Best School"
+fi
+i=("$i"+1)
+done
