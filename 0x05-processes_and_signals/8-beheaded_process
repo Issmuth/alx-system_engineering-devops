@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# kill the highlander
+i=$(pgrep -f 7-highlander)
+kill -s SIGKILL "$i"
