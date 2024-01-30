@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# test script for the regular expression 1
+./3-repetition_token_2.rb "hb 
+			   hbtn 
+			   hbttn
+			   hbtttn 
+			   hbttttn
+			   hbtttttn
+			   hbttttttn" | cat -e
