@@ -1,6 +1,7 @@
-#!/usr/bin/pup
 # installs flask of specific version
-package { 'Flask':
+#!/usr/bin/pup
+
+package { 'flask':
     ensure   => '2.1.0',
-    provider => 'pip3',
+    provider => 'pip3'
 }
