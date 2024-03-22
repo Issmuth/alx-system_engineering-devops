@@ -1,5 +1,5 @@
-# installs flask of specific version
 #!/usr/bin/pup
+# installs flask of specific version
 package { 'python':
     ensure => '3.8.10'
 }
