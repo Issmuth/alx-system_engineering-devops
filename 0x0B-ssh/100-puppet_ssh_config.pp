@@ -1,8 +1,15 @@
 # sets up an ssh configuration file
 
-file { '/etc/ssh/sshd_config':
-    ensure  => file,
-    owner   => 'root',
-    content => 'IdentityFile ~/.ssh/school
-PasswordAuthentication no',
+file_line { 'use school':
+    ensure  => present,
+    path    => '/etc/ssh/ssh_config',
+    replace => true,
+    line    => 'IdentityFile ~/.ssh/school',
+}
+
+file_line { 'no pasword':
+    ensure  => present,
+    path    => '/etc/ssh/ssh_config',
+    replace => true,
+    line    => 'PasswordAuthentication no',
 }
