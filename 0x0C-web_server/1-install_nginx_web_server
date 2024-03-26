@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# installs and configures nginx web server
+
+sudo apt-get -y update
+sudo apt-get -y install nginx
+sudo ufw allow 'Nginx HTTP'
+nginx -e 'location / { 
+    return 200 "Hello World!";
+}'
