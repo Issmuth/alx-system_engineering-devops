@@ -10,8 +10,8 @@ line1="\n\t}\n\tif (\$uri ~* \"redirect_me\") {"
 line2="\t\trewrite ^ https://www.youtube.com/watch?v=xvFZjo5PgG0&pp=ygUJcmljayByb2xs permanent;"
 
 temp=$(mktemp)
-echo -e $line1 >> $temp
-echo -e $line2 >> $temp
+echo -e "$line1" >> "$temp"
+echo -e "$line2" >> "$temp"
 
 sudo sed -i "\/^\\t\\ttry_files \$uri \$uri\/ \=404\;/r $temp" /etc/nginx/sites-enabled/default
 sudo service nginx start
