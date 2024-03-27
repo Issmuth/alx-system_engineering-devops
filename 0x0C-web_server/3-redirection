@@ -5,23 +5,13 @@ sudo apt-get -y update
 sudo apt-get -y install nginx
 sudo ufw allow 'Nginx HTTP'
 echo "Hello World!" > /var/www/html/index.nginx-debian.html
-new_confi=\
-"server {
-        listen 80;
-        listen [::]:80;
 
-        server_name example.com;
+line1="\n\t}\n\tif (\$uri ~* \"redirect_me\") {"
+line2="\t\trewrite ^ https://www.youtube.com/watch?v=xvFZjo5PgG0&pp=ygUJcmljayByb2xs permanent;"
 
-        root /var/www/example.com;
-        index index.html;
+temp=$(mktemp)
+echo -e $line1 >> $temp
+echo -e $line2 >> $temp
 
-        location / {
-                 try_files $uri $uri/ =404;
-        }
-        if (\$request_filename ~ redirect_me){
-                rewrite ^ https://sketchfab.com/bluepeno/models permanent;
-        }
-}"
-
-sudo echo -e $new_config > /etc/nginx/sites-enabled/default
+sudo sed -i "\/^\\t\\ttry_files \$uri \$uri\/ \=404\;/r $temp" /etc/nginx/sites-enabled/default
 sudo service nginx start
