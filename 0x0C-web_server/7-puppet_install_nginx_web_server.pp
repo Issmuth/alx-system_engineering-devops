@@ -2,15 +2,21 @@
 # confiures nginx
 
 package { 'nginx':
-    ensure => installed,
-    'http' => {
+    ensure         => installed,
+    manage_repo    => true,
+    service_manage => true,
+    'http'         => {
         'sendfile' => 'on',
         'server'   => {
-            'listen'     => '80',
-            'location /' => {
+            'listen'                => '80',
+            'location /'            => {
                 'return'      => '200',
                 'add_header'  => 'Content-Type text/html',
                 'return_body' => 'Hello World!',
+            },
+            'location /redirect_me' => {
+                'return'     => '301',
+                'add_header' => 'Location https://www.youtube.com/watch?v=xvFZjo5PgG0&pp=ygUJcmljayByb2xs',
             },
         },
     },
