@@ -31,7 +31,7 @@ errtemp=$(mktemp)
 sudo sed -i "\/^\\t\\ttry_files \$uri \$uri\/ \=404\;/r $errtemp" /etc/nginx/sites-enabled/default
 
 hname=$(hostname)
-config="\t\tadd_header X-Server-By ${hname};"
+config="\t\tadd_header X-Server-By \"${hname}\";"
 
 sudo sed -i "\/^\\t\\ttry_files \$uri \$uri\/ \=404\;/a \\$config" /etc/nginx/sites-enabled/default
 sudo service nginx start
