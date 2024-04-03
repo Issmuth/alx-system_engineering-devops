@@ -19,7 +19,7 @@ sudo mv error.html /var/www/html
 
 err_line1="\n\t}\n\terror_page 404 /error.html;"
 err_line2="\tlocation = /error.html {"
-err_line3="\t\tinternal;\n\t}"
+err_line3="\t\tinternal;"
 
 errtemp=$(mktemp)
 {
@@ -30,8 +30,6 @@ errtemp=$(mktemp)
 
 sudo sed -i "\/^\\t\\ttry_files \$uri \$uri\/ \=404\;/r $errtemp" /etc/nginx/sites-enabled/default
 
-hname=$(hostname)
-config="\t\tadd_header X-Server-By \"${hname}\";"
+sed -i "s/include \/etc\/nginx\/sites-enabled\/\*;/include \/etc\/nginx\/sites-enabled\/\*;\n\tadd_header X-Served-By \"$HOSTNAME\";/" /etc/nginx/nginx.conf
 
-sudo sed -i "\/^\\t\\ttry_files \$uri \$uri\/ \=404\;/a \\$config" /etc/nginx/sites-enabled/default
 sudo service nginx start
