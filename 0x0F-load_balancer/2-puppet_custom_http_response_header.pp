@@ -1,6 +1,3 @@
-$nginx_package_name = 'nginx'
-$ufw_package_name = 'ufw'
-
 package { 'nginx':
   ensure => installed,
 }
