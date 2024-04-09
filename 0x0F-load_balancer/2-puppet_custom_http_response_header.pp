@@ -1,3 +1,5 @@
+# sets up a server with custom header
+t 
 package { 'nginx':
   ensure => installed,
 }
