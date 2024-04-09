@@ -1,32 +1,57 @@
-#!/usr/bin/env pup
-# confiures nginx
-
-package { 'nginx':
-    ensure => installed,
+exec { 'install nginx':
+    command => '/bin/bash -c "apt-get update && apt-get install nginx"'
 }
 
-service { 'nginx':
-    ensure  => running,
-    enable  => true,
-    require => Package['nginx'],
+exec { 'listen http':
+    provider => shell,
+    command  => 'ufw allow "Nginx HTTP"',
 }
 
-file { '/etc/nginx/sites-available/default':
-    ensure  => file,
-    content => template('nginx/default.erb'),
-    notify  => Service['nginx'],
+exec { 'hello world':
+    command => '/bin/bash -c "echo \"Hello World!\" > /var/www/html/index.nginx-debian.html"',
 }
 
-server {
-  listen 80 default_server;
-  listen [::]:80 default_server;
+exec { 'add redirect':
+    provider => shell,
+    command  => 'line1="\n\t}\n\tif (\$uri ~* \"redirect_me\") {"; line2="\t\trewrite ^ https://www.youtube.com/watch?v=xvFZjo5PgG0&pp=ygUJcmljayByb2xs permanent;"; temp=$(mktemp); echo -e "$line1" >> "$temp"; echo -e "$line2" >> "$temp"; sudo sed -i "\/^\\t\\ttry_files \$uri \$uri\/ \=404\;/r $temp" /etc/nginx/sites-available/default;',
+}
 
-  location / {
-    return 200 'Hello World!';
-    add_header Content-Type text/html;
-  }
+exec { 'custom_error_page':
+    provider => shell,
+    command  => 'echo "Ceci n\'est pas une page" > error.html',
+}
 
-  location /redirect_me {
-    return 301 'https://www.youtube.com/watch?v=xvFZjo5PgG0&pp=ygUJcmljayByb2xs';
-  }
+exec { 'error page config':
+    provider => shell,
+    command  => 'sudo mv error.html /var/www/html; err_line1="\n\t}\n\terror_page 404 /error.html;"',
+}
+
+exec { 'error page config 2':
+    provider => shell,
+    command  => 'err_line2="\tlocation = /error.html {"; err_line3="\t\tinternal;\n\t"',
+}
+
+exec { 'error page config 3':
+    provider => shell,
+    command  => 'errtemp=$(mktemp); echo -e "$err_line1" >> "$errtemp"',
+}
+
+exec { 'error page config 4':
+    provider => shell,
+    command  => 'echo -e "$err_line2" >> "$errtemp"',
+}
+
+exec { 'error page config 5':
+    provider => shell,
+    command  => 'echo -e "$err_line3" >> "$errtemp"',
+}
+
+exec { 'error page config 6':
+    provider => shell,
+    command  => 'sudo sed -i "\/^\\t\\ttry_files \$uri \$uri\/ \=404\;/r $errtemp" /etc/nginx/sites-available/default',
+}
+
+exec {'restart nginx':
+    provider => shell
+    command  => 'service nginx restart'
 }
