@@ -8,6 +8,8 @@ sudo apt-get -y install haproxy=2.0.\*
 
 echo 'ENABLED=1' >> /etc/default/haproxy
 
+sudo sed -i '/default/a \\tno option http-use-htx' /etc/haproxy/haproxy.cfg
+
 frontend="frontend http\n\tbind *:80\n\tmode http\n\tdefault_backend allservers\n\n"
 backend="backend allservers\n\tmode http\n\tserver 208163-web-01 100.25.2.66:80 check\n\tserver 208163-web-02 54.159.26.115:80 check\n"
 
