@@ -1,3 +1,5 @@
+#sets up nginx server
+
 exec { 'install nginx':
     command => '/bin/bash -c "apt-get update && apt-get install nginx"'
 }
