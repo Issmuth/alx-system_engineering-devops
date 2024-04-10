@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# information about a domain
+
+digger () {
+	record=$(dig "$1"."$2" | grep -E '^[A-Za-z]' | awk '{print $4}')
+	destination=$(dig "$1"."$2" | grep -E '^[A-Za-z]' | awk '{print $5}')
+	echo "The subdomain $1 is a $record record and points to $destination"
+}
+
+if [ "$#" == 1 ]
+then
+	digger "www" "$1"
+	digger "lb-01" "$1"
+	digger "web-01" "$1"
+	digger "web-02" "$1"
+else
+	digger "$2" "$1"
+fi
