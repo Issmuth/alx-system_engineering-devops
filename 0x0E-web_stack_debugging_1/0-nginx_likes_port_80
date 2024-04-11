@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# debugging a web server
+sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+sudo service nginx restart
