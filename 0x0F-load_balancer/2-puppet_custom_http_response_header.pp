@@ -1,39 +1,64 @@
-# sets up a server with custom header
-t 
-package { 'nginx':
-  ensure => installed,
+# sets up a new server
+
+exec { 'install nginx':
+    provider => shell,
+    command  => 'sudo apt-get -y update; sudo apt-get install nginx;',
 }
 
-package { 'ufw':
-  ensure => installed,
+exec { 'serve port 80':
+    provider => shell,
+    command  => 'sudo ufw allow 'Nginx HTTP'; echo "Hello World!" > /var/www/html/index.nginx-debian.html',
 }
 
-exec { 'ufw_allow_nginx_http':
-  command => "ufw allow 'Nginx HTTP'",
-  require => Package[$ufw_package_name],
+# adds a redirect config to nginx
+
+$commands = ['line1="\t}\n\tif (\$uri ~* \"redirect_me\") {\""',
+              'line2="\t\trewrite ^ https://www.youtube.com/watch?v=xvFZjo5PgG0&pp=ygUJcmljayByb2xs permanent;"',
+              'temp=$(mktemp)',
+              'echo -e "$line1" >> "$temp"',
+              'echo -e "$line2" >> "$temp"',
+              'sudo sed -i "\/^\\t\\ttry_files \$uri \$uri\/ \=404\;/r $temp" /etc/nginx/sites-available/default',
+            ]
+$commands_merged = join($commands, '; ')
+
+exec { 'adds redirect':
+    provider => shell,
+    command  => $commands_merged,
+    }
+
+# creates and adds a custom error page to nginx
+$commands2 = ['err_line1="\n\t}\n\terror_page 404 /error.html;"',
+              'err_line2="\tlocation = /error.html {"',
+              'err_line3="\t\tinternal;\n\t"',
+              'errtemp=$(mktemp)',
+              'echo -e "$err_line1" >> "$errtemp"',
+              'echo -e "$err_line2" >> "$errtemp"',
+              'echo -e "$err_line3" >> "$errtemp"',
+              'sudo sed -i "\/^\\t\\ttry_files \$uri \$uri\/ \=404\;/r $errtemp" /etc/nginx/sites-available/default'
+              'echo "Ceci n\'est pas une page" > error.html',
+              'sudo mv error.html /var/www/html'
+              ]
+
+$commands_merged2 = join($commands2, '; ')
+
+exec { 'creates error pages':
+    provider => shell,
+    command  => $commands_merged2,
 }
 
-file { '/var/www/html/index.nginx-debian.html':
-  ensure  => file,
-  content => 'Hello World!',
-  require => Package[$nginx_package_name],
+$headers = ['sed -i "s/include \/etc\/nginx\/sites-enabled\/\*;',
+            '/include \/etc\/nginx\/sites-enabled\/\*;\n\tadd_header',
+            ' X-Served-By \"$HOSTNAME\";/" /etc/nginx/nginx.conf'
+          ]
+
+$header_merged = join($headers, '')
+
+exec { 'add header':
+    provider => shell,
+    command  => $header_merged,
 }
 
-file_line { 'nginx_redirect':
-  path    => '/etc/nginx/sites-enabled/default',
-  line    => '\t}\n\tif ($uri ~* "redirect_me") {\n\t\trewrite ^ https://www.youtube.com/watch?v=xvFZjo5PgG0&pp=ygUJcmljayByb2xs permanent;',
-  require => Package[$nginx_package_name],
+exec { 'start nginx':
+    provider => shell,
+    command  => 'sudo service ngnix restart',
 }
-
-file { '/var/www/html/error.html':
-  ensure  => file,
-  content => 'Ceci n\'est pas une page',
-  require => Package[$nginx_package_name],
-}
-
-file_line { 'nginx_error_page':
-  path    => '/etc/nginx/sites-enabled/default',
-  line    => '\n\t}\n\terror_page 404 /error.html;\n\tlocation = /error.html {\n\t\tinternal;',
-  require => Package[$nginx_package_name],
-}
-
