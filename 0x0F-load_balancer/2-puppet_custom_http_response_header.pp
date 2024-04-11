@@ -7,7 +7,7 @@ exec { 'install nginx':
 
 exec { 'serve port 80':
     provider => shell,
-    command  => 'sudo ufw allow 'Nginx HTTP'; echo "Hello World!" > /var/www/html/index.nginx-debian.html',
+    command  => 'sudo ufw allow "Nginx HTTP"; "Hello World!" > /var/www/html/index.nginx-debian.html',
 }
 
 # adds a redirect config to nginx
@@ -34,8 +34,8 @@ $commands2 = ['err_line1="\n\t}\n\terror_page 404 /error.html;"',
               'echo -e "$err_line1" >> "$errtemp"',
               'echo -e "$err_line2" >> "$errtemp"',
               'echo -e "$err_line3" >> "$errtemp"',
-              'sudo sed -i "\/^\\t\\ttry_files \$uri \$uri\/ \=404\;/r $errtemp" /etc/nginx/sites-available/default'
-              'echo "Ceci n\'est pas une page" > error.html',
+              'sudo sed -i "\/^\\t\\ttry_files \$uri \$uri\/ \=404\;/r $errtemp" /etc/nginx/sites-available/default',
+              "sudo echo 'Ceci n\'est pas une page' > error.html",
               'sudo mv error.html /var/www/html'
               ]
 
