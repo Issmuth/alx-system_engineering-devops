@@ -5,4 +5,4 @@ day=$(date +"%d")
 month=$(date +"%m")
 year=$(date +"%Y")
 file="$day-$month-$year.tar.gz"
-tar -czvf "$filename" backup.sql
+tar -czvf "$file" backup.sql
