@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # creates a backup of all the databases
 sudo mysqldump -u root --password="$1" --all-databases > backup.sql
-day=$(date "+%d")
-month=$(date "+%m")
-year=$(date "+%Y")
+day=$(date +"%d")
+month=$(date +"%m")
+year=$(date +"%Y")
 file="$day-$month-$year.tar.gz"
 tar -czvf "${filename}" backup.sql
