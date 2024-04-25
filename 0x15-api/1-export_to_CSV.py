@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""CSV format."""
 import csv
 import requests
 import sys
