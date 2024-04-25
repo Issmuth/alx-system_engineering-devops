@@ -10,7 +10,7 @@ if __name__ == "__main__":
     employee_dict = {}
     for employee in employees:
         todos = requests.get('https://jsonplaceholder.typicode.com/todos?userId={}'
-                             .format(employee.get('userId'))).json()
+                             .format(employee.get('id'))).json()
 
         tasks = []
         for task in todos:
@@ -21,7 +21,7 @@ if __name__ == "__main__":
             }
             tasks.append(task_dict)
 
-        employee_dict['{}'.format(employee.get('userId'))] = tasks
+        employee_dict['{}'.format(employee.get('id'))] = tasks
 
     with open('todo_all_employees.json', 'w') as file:
         json.dump(employee_dict, file)
