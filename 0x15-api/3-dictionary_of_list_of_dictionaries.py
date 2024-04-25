@@ -5,11 +5,13 @@ import requests
 
 
 if __name__ == "__main__":
-    employees = requests.get('https://jsonplaceholder.typicode.com/users').json()
+    employees = requests.get('https://jsonplaceholder.typicode.com/'
+                             'users').json()
 
     employee_dict = {}
     for employee in employees:
-        todos = requests.get('https://jsonplaceholder.typicode.com/todos?userId={}'
+        todos = requests.get('https://jsonplaceholder.typicode.com/'
+                             'todos?userId={}'
                              .format(employee.get('id'))).json()
 
         tasks = []
