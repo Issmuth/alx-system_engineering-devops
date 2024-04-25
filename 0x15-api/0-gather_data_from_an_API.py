@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """api gather."""
-import sys
 import requests
+import sys
 
 
 if __name__ == "__main__":
@@ -14,7 +14,7 @@ if __name__ == "__main__":
                         'todos?userId={}&&completed=true'
                         .format(sys.argv[1])).json()
 
-    print('Employee {} is done with tasks ({}/{}):'
+    print('Employee {} is done with tasks({}/{}):'
           .format(employee.get('name'), len(done), len(todos)))
 
     for task in done:
