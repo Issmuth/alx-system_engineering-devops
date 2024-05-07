@@ -12,7 +12,7 @@ def number_of_subscribers(subreddit):
     header = {"user-agent": "Chrome/124.0.0.0"}
     response = requests.get(url, headers=header)
 
-    if response.status_code != 200:
+    if response.status_code == 400:
         return 0
 
     data = response.json().get('data').get('children')
