@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-"""Retrives the hot posts in a subreddit."""
+"""
+Retrives the hot posts in a subreddit.
+"""
 import requests
 
 
@@ -17,7 +19,7 @@ def top_ten(subreddit):
                             params=parameter,
                             allow_redirects=False)
 
-    if response.status_code == 404:
+    if response.status_code != 200:
         print("None")
         return
 
